@@ -1,5 +1,5 @@
 """
-Similarity calculation module for RFQ analysis.
+Task B.3 Similarity calculation module for RFQ analysis.
 Calculates weighted aggregate similarity scores between RFQs.
 """
 
@@ -27,12 +27,14 @@ def calculate_rfq_similarity(feature_df):
     # Extract available features directly from the dataframe
     # Dimension features (use the most reliable ones with good coverage)
     dimension_features = [
-        ('thickness_interval_min', 'thickness_interval_max'),
-        ('width_interval_min', 'width_interval_max'),
-        ('weight_interval_min', 'weight_interval_max'),
-        ('yield_strength_interval_min', 'yield_strength_interval_max'),
-        ('tensile_strength_interval_min', 'tensile_strength_interval_max')
+        ('thickness_interval_min', 'thickness_interval_max'),    # 833 values
+        ('width_interval_min', 'width_interval_max'),           # 539 values  
+        ('weight_interval_min', 'weight_interval_max'),         # 393 values
+        ('inner_diameter_interval_min', 'inner_diameter_interval_max'), # 177 values
+        ('length_interval_min', 'length_interval_max'),         # 131 values
+        ('height_interval_min', 'height_interval_max')          # 132 values
     ]
+
     # Filter to only those that exist in dataframe
     dimension_features = [(min_col, max_col) for min_col, max_col in dimension_features 
                          if min_col in feature_df.columns and max_col in feature_df.columns]
@@ -45,9 +47,9 @@ def calculate_rfq_similarity(feature_df):
     
     # Define feature weights
     weights = {
-        'dimensions': 0.3,      # 30% weight for dimensional similarity
-        'categorical': 0.3,     # 30% weight for categorical matches  
-        'grade_properties': 0.4 # 40% weight for grade property similarity
+        'dimensions': 0.50,      # 50% - most discriminating
+        'categorical': 0.20,     # 20% - less discriminating (many 1.0s)
+        'grade_properties': 0.30 # 30% - high but less critical
     }
     
     print(f"Feature groups defined:")

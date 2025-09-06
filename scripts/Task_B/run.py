@@ -1,49 +1,42 @@
 #!/usr/bin/env python3
 """
-Task B: RFQ Similarity Analysis Pipeline
+Task B: RFQ Similarity Analysis Pipeline - Simple Runner
 """
 
-import sys
+import pandas as pd
 from pathlib import Path
 import logging
 
-# Import pipeline modules
 from data_loader import load_rfq_data
 from grade_normalizer import normalize_grades
 from range_parser import parse_range_strings
 from feature_engineering import engineer_similarity_features
 from similarity_calculator import calculate_rfq_similarity
-#from deliverable_creator import create_final_deliverable, create_summary_report
 
 def main():
-    """Run the complete RFQ similarity analysis pipeline."""
+    """Run complete pipeline and save results."""
     
-    logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-    logger = logging.getLogger(__name__)
+    logging.basicConfig(level=logging.WARNING)  # Reduce output noise
     
-    logger.info("Starting RFQ similarity analysis...")
+    print("Running RFQ similarity analysis pipeline...")
     
-    # Load data
+    # Execute pipeline
     rfq_df, reference_df = load_rfq_data()
+    enriched_df, _ = normalize_grades(rfq_df, reference_df)
+    parsed_df = parse_range_strings(enriched_df)
+    feature_df = engineer_similarity_features(parsed_df)
+    similarity_results = calculate_rfq_similarity(feature_df)
     
-    # Process and enrich data
-    enriched_rfq, grade_mapping = normalize_grades(rfq_df, reference_df)
+    # Save results
+    output_path = Path("../../results/top3.csv")
+    output_path.parent.mkdir(exist_ok=True)
     
-    # Parse range strings
-    enriched_with_ranges = parse_range_strings(enriched_rfq)
-
-    # Feature engineering
-    feature_engineered_df = engineer_similarity_features(enriched_with_ranges)
-
-    print("\n=== TASK B.3: Similarity Calculation ===")
-    # Calculate similarities
-    similarity_results = calculate_rfq_similarity(feature_engineered_df)
+    deliverable = similarity_results[['rfq_id', 'match_id', 'similarity_score']].copy()
+    deliverable['similarity_score'] = deliverable['similarity_score'].round(6)
+    deliverable.to_csv(output_path, index=False)
     
-    # Create deliverables
-    create_final_deliverable(similarity_results)
-    create_summary_report(similarity_results, feature_engineered_df)
-    
-    logger.info("Pipeline completed! Results saved to ../../results/top3.csv")
+    print(f"Pipeline completed! Results saved to: {output_path}")
+    print(f"Generated {len(deliverable)} similarity pairs")
 
 if __name__ == "__main__":
     main()

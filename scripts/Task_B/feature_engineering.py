@@ -1,5 +1,5 @@
 """
-Task B.2: Feature engineering module for RFQ similarity analysis.
+Feature engineering module for RFQ similarity analysis.
 Creates interval features, categorical features, and property features for similarity calculation.
 """
 
@@ -23,7 +23,7 @@ def engineer_similarity_features(enriched_df):
         DataFrame with engineered features and similarity functions
     """
     
-    print("=== TASK B.2: Feature Engineering ===")
+    print("\n=== TASK B.2: Feature Engineering ===")
     
     df_work = enriched_df.copy()
     
@@ -119,7 +119,7 @@ def prepare_grade_properties(df):
     ]
     
     # Filter features with sufficient data coverage (5% minimum)
-    min_coverage = 5
+    min_coverage = 10
     kept_features = []
     total_with_ref = df['Grade/Material'].notna().sum()
     
@@ -182,10 +182,19 @@ if __name__ == "__main__":
     categorical_clean_cols = [col for col in feature_df.columns if '_clean' in col]
     print(f"\nDEBUG - The {len(categorical_clean_cols)} categorical '_clean' features are:")
     for i, col in enumerate(categorical_clean_cols, 1):
-        print(f"  {i}. {col}")
+        count = feature_df[col].notna().sum()
+        print(f"  {i}. {col}: {count} values")
     
     # Debug: Show exactly which _mid features are being counted
     mid_cols = [col for col in feature_df.columns if '_mid' in col]
     print(f"\nDEBUG - The {len(mid_cols)} '_mid' features are:")
     for i, col in enumerate(mid_cols, 1):
-        print(f"  {i}. {col}")
+        count = feature_df[col].notna().sum()
+        print(f"  {i}. {col}: {count} values")
+    
+    # Debug: Show dimensional features and their counts
+    dimension_cols = [col for col in feature_df.columns if '_interval_' in col or '_center' in col or '_width' in col]
+    print(f"\nDEBUG - Dimensional features ({len(dimension_cols)} total):")
+    for i, col in enumerate(dimension_cols, 1):
+        count = feature_df[col].notna().sum()
+        print(f"  {i}. {col}: {count} values")
