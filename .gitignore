@@ -12,6 +12,9 @@ __pycache__/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+src/Task_B/*.ipynb
+src/Task_B/TaskB_RFQ_Similarity.ipynb
+src/taskb/*.ipynb
 
 # IDE
 .vscode/
