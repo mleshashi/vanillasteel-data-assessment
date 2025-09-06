@@ -46,16 +46,20 @@ This repository contains solutions for the Vanilla Steel Data Assessment, focusi
 
 ## 🚀 Getting Started
 
-### 1. Install Dependencies
+### 1. Clone and Set Up
 
 ```bash
+git clone https://github.com/mleshashi/vanillasteel-data-assessment.git
+cd vanillasteel-data-assessment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 ### 2. Run Task A (Jupyter Notebook)
 
 ```bash
-cd notebooks/
+cd src/Task_A/
 jupyter notebook Task_A.ipynb
 ```
 Run all cells to generate the cleaned inventory dataset.
@@ -63,7 +67,7 @@ Run all cells to generate the cleaned inventory dataset.
 ### 3. Run Task B (Python Pipeline)
 
 ```bash
-cd scripts/Task_B/
+cd src/Task_B/
 python run.py
 ```
 This will execute the similarity analysis and save results to `results/top3.csv`.
