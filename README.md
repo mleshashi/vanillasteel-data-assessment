@@ -5,17 +5,21 @@ This repository contains solutions for the Vanilla Steel Data Assessment, focusi
 
 ---
 
-## � Project Structure
+## 📁 Project Structure
 
 ```
-notebooks/      # Jupyter notebooks for Task A & B exploration
-resources/      # Raw & updated input data
-results/        # Final outputs (Task A & Task B)
-src/            # Python code for Task A & B
-requirements.txt
-README.md
-LICENSE
-.gitignore
+├── notebooks/
+│ └── TaskA-data exploration
+│ └── TaskB-data exploration
+├── resources/ # Raw & updated input data
+├── results/ # Final outputs (Task A & Task B)
+├── src/ # Modular Python code for Task A & B
+│ └── TaskA
+│ └── TaskB
+├── .gitignore
+├── LICENSE
+├── README.md
+└── requirements.txt
 ```
 
 ---
